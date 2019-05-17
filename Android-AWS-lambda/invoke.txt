@@ -1,0 +1,1 @@
+aws lambda invoke --invocation-type RequestResponse --function-name "arn:aws:lambda:us-east-2:427381771745:function:AndroidAWSlambda" --payload file://eventdata.txt output.json

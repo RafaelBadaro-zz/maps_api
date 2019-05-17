@@ -1,0 +1,1 @@
+{"sensorName": "GPS", "sensorValue": "1234"}
