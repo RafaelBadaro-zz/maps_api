@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/TrabalhoCloud.iml" filepath="$PROJECT_DIR$/TrabalhoCloud.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/maps_api.iml" filepath="$PROJECT_DIR$/maps_api.iml" />
     </modules>
   </component>
 </project>
