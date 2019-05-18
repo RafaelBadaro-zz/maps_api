@@ -15,6 +15,7 @@ import com.amazonaws.regions.Regions;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private LatLng pucs[];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +27,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
     }
 
+    private void criarArray(){
+            pucs[0] = new LatLng(-19.933209, -43.937179); // praça da liberdade
+            pucs[1] = new LatLng(-19.924365, -43.991588);// coreu
+            pucs[2] = new LatLng(-19.859570,-43.919052);// são gabriel
+            pucs[3] = new LatLng(-19.976627, -44.027777);// barreiro
+            pucs[4] = new LatLng(-19.954935, -44.198635);// betim
+            pucs[5] = new LatLng(-19.940546, -44.076264);// contagem
+    }
 
     /**
      * Manipulates the map once available.
@@ -39,10 +48,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        criarArray();
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        for (int i = 0; i <= pucs.length; i++){
+            mMap.addMarker(new MarkerOptions().position(pucs[i]).title("Uma unidade da PUC MINAS"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(pucs[i]));
+        }
+
     }
 }
