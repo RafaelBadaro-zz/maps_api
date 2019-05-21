@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -22,6 +24,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.amazonaws.mobileconnectors.lambdainvoker.*;
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.regions.Regions;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +35,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private RequestClass request;
     private MyInterface myInterface;
     private LocationManager mLocationManager;
+    private FusedLocationProviderClient fusedLocationClient;
 
     @SuppressLint("MissingPermission")
     @Override
@@ -49,31 +53,52 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         getPermissions();
 
-        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500l,
-                100.0f, mLocationListener);
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5l,
+                1.0f, mLocationListener);
+
+        getLastLocation();
     }
 
-    private final LocationListener mLocationListener = new LocationListener() {
-        @Override
-        public void onLocationChanged(final Location location) {
-            invocarLambda(location);
-        }
+        private final LocationListener mLocationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(final Location location) {
+                invocarLambda(location);
+            }
 
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
 
-        }
+            }
 
-        @Override
-        public void onProviderEnabled(String provider) {
+            @Override
+            public void onProviderEnabled(String provider) {
 
-        }
+            }
 
         @Override
         public void onProviderDisabled(String provider) {
 
         }
     };
+
+    @SuppressLint("MissingPermission")
+    public void getLastLocation(){
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        // Got last known location. In some rare situations this can be null.
+                        if (location != null) {
+                            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                            float zoom = 16.0f;
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
+                            invocarLambda(location);
+                        }
+                    }
+                });
+    }
 
     public void getPermissions(){
         if (ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)

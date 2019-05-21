@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Android-AWS-lambda:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Android_AWS_lambda_jar</output-path>
+    <root id="archive" name="Android-AWS-lambda.jar">
+      <element id="module-output" name="Android-AWS-lambda" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/amazonaws/aws-lambda-java-core/1.1.0/aws-lambda-java-core-1.1.0.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
